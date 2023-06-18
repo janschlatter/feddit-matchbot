@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
+from db.db import get_connection, release_connection
 from dotenv import load_dotenv
 import os
 
@@ -66,6 +67,36 @@ def handle_schedule_post():
 
     result = schedule_post(season, team_id, league_id)
     return result
+
+
+@app.route("/scheduledPosts")
+def scheduled_posts():
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT * FROM scheduledPosts")
+        scheduled_posts = cursor.fetchall()
+        print("Retrieved scheduled posts:", scheduled_posts)  # Debug print
+        return render_template("scheduledPosts.html", scheduled_posts=scheduled_posts)
+    except Exception as e:
+        print("Error retrieving scheduled posts:", e)  # Debug print
+    finally:
+        release_connection(conn)
+
+
+@app.route("/delete_post/<int:post_id>", methods=["DELETE"])
+def delete_post(post_id):
+    conn = get_connection()
+    cursor = conn.cursor()
+    try:
+        cursor.execute("DELETE FROM scheduledPosts WHERE id = %s", (post_id,))
+        conn.commit()
+        return "Post deleted!"
+    except Exception as e:
+        conn.rollback()
+        return f"Error deleting post: {e}"
+    finally:
+        release_connection(conn)
 
 
 if __name__ == "__main__":

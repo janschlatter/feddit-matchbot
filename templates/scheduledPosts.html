@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Scheduled Posts{% endblock %}
+
+{% block content %}
+    <h1 class="pb-5">Scheduled Posts</h1>
+    {% if scheduled_posts %}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Season</th>
+                    <th>Team ID</th>
+                    <th>League ID</th>
+                    <th>Actions</th> <!-- New column for delete button -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for post in scheduled_posts %}
+                <tr>
+                    <td>{{ post[0] }}</td>
+                    <td>{{ post[1] }}</td>
+                    <td>{{ post[2] }}</td>
+                    <td>{{ post[3] }}</td>
+                    <td>
+                        <button onclick="deletePost('{{ post[0] }}')" class="btn btn-danger">Delete</button> <!-- Delete button -->
+                    </td>                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No scheduled posts found.</p>
+    {% endif %}
+
+    <script>
+        function deletePost(postId) {
+            // Make an AJAX request to delete the post
+            var xhr = new XMLHttpRequest();
+            xhr.open("DELETE", `/delete_post/${postId}`, true); // Use DELETE method
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert("Post deleted!");
+                    location.reload(); // Refresh the page after deleting the post
+                }
+            };
+            xhr.send();
+        }
+    </script>
+{% endblock %}
