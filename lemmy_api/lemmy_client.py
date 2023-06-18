@@ -11,9 +11,13 @@ class LemmyClient:
     def get_token(self):
         url = f"{self.base_url}/api/v3/user/login"
         data = {"username_or_email": self.username, "password": self.password}
-        response = requests.post(url, json=data)
-        print(response.content)
-        return response.json()["jwt"]
+        try:
+            response = requests.post(url, json=data)
+            response.raise_for_status()  # Debug print
+            return response.json()["jwt"]
+        except requests.exceptions.RequestException as e:
+            print(f"Error occurred while getting token: {e}")
+            raise
 
     def create_post(self, title, content, community_id):
         print("Creating post...")  # Debug print
@@ -24,7 +28,10 @@ class LemmyClient:
             "community_id": community_id,
             "auth": self.token,  # Add the auth field with the token
         }
-        response = requests.post(url, json=data)
-        print("Lemmy API response status code:", response.status_code)  # Debug print
-        print("Raw Lemmy API response:", response.content)  # Debug print
-        return response.json()
+        try:
+            response = requests.post(url, json=data)
+            response.raise_for_status()  # Debug print
+            return response.json()
+        except requests.exceptions.RequestException as e:
+            print(f"Lemmy Response: {e}")  # Debug print
+            raise
