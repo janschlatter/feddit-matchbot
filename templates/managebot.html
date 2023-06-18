@@ -1,13 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Manage Bot</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Manage Bot{% endblock %}
+
+{% block content %}
     <h1>Manage Bot</h1>
-    <h2>Next Fixture</h2>
-    <div id="next-fixture"></div>
-    <button onclick="sendToLemmy()">Send to Lemmy</button>
+    <div class="row">
+        <div id="content" class="col-md-9">
+            <h2>Next Fixture</h2>
+            <div id="next-fixture"></div>
+            <button onclick="sendToLemmy()" class="btn btn-primary">Send to Lemmy</button>
+        </div>
+    </div>
 
     <script>
         function sendToLemmy() {
@@ -53,12 +56,17 @@
     </script>
 
     <h2>Input Data</h2>
-    <label for="season">Season:</label>
-    <input type="text" id="season" name="season" required><br><br>
-    <label for="team-id">Team ID:</label>
-    <input type="text" id="team-id" name="team-id" required><br><br>
-    <label for="league-id">League ID:</label>
-    <input type="text" id="league-id" name="league-id" required><br><br>
-    <button onclick="getNextFixture()">Get Next Fixture</button>
-</body>
-</html>
+    <div class="form-group">
+        <label for="season">Season:</label>
+        <input type="text" id="season" name="season" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="team-id">Team ID:</label>
+        <input type="text" id="team-id" name="team-id" class="form-control" required>
+    </div>
+    <div class="form-group">
+        <label for="league-id">League ID:</label>
+        <input type="text" id="league-id" name="league-id" class="form-control" required>
+    </div>
+    <button onclick="getNextFixture()" class="btn btn-primary">Get Next Fixture</button>
+{% endblock %}

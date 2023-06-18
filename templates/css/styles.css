@@ -1,0 +1,27 @@
+/* styles.css */
+
+/* Header styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #f8f9fa;
+}
+
+/* Sidebar styles */
+#sidebar {
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* Content styles */
+#content {
+    padding: 20px;
+}
+
+/* Footer styles */
+.footer {
+    padding: 10px;
+    background-color: #f8f9fa;
+}
