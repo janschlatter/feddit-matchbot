@@ -3,12 +3,13 @@
 {% block title %}Manage Bot{% endblock %}
 
 {% block content %}
-    <h1>Manage Bot</h1>
+    <h1 class="pb-5">Search for Fixtures</h1>
     <div class="row">
         <div id="content" class="col-md-9">
             <h2>Next Fixture</h2>
             <div id="next-fixture"></div>
             <button onclick="sendToLemmy()" class="btn btn-primary">Send to Lemmy</button>
+            <button onclick="schedulePost()" class="btn btn-primary">Schedule Post</button>
         </div>
     </div>
 
@@ -52,6 +53,23 @@
                 }
             };
             xhr.send();
+        }
+
+        function schedulePost() {
+            var season = document.getElementById("season").value;
+            var teamId = document.getElementById("team-id").value;
+            var leagueId = document.getElementById("league-id").value;
+
+            // Make an AJAX request to schedule the post
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/schedule_post", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    alert("Post scheduled!");
+                }
+            };
+            xhr.send(JSON.stringify({ season: season, teamId: teamId, leagueId: leagueId }));
         }
     </script>
 

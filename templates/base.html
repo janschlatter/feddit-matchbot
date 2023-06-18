@@ -8,19 +8,20 @@
 <body>
     <div class="container-fluid">
         <div class="header">
-            <h1>Matchbot</h1>
+            <h1>Lemmy Matchbot</h1>
             <a href="#" class="btn btn-link"><i class="fa fa-cog"></i></a>
         </div>
         <div class="row">
-            <div id="sidebar" class="col-md-3 bg-light">
-                <!-- Sidebar content goes here -->
+            <div id="sidebar" class="col-md-2 min-vh-100 bg-light">
+                <!-- Sidebar content  -->
                 <ul class="list-group">
-                    <li class="list-group-item"><a href="/">Home</a></li>
-                    <li class="list-group-item"><a href="/manage_bot">Manage Bot</a></li>
-                    <!-- Add more sidebar links as needed -->
+                    <li class="list-group-item"><a href="/">Dashboard</a></li>
+                    <li class="list-group-item"><a href="/manage_bot">Search</a></li>
+                    <li class="list-group-item"><a href="/">Schedule</a></li>
+                    <li class="list-group-item"><a href="/manage_bot">Settings</a></li>
                 </ul>
             </div>
-            <div id="content" class="col-md-9">
+            <div id="content" class="col-md-8 ml-5">
                 {% block content %}
                 {% endblock %}
             </div>

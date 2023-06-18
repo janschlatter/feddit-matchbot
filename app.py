@@ -5,6 +5,7 @@ import os
 from football_api.data_client import FootballDataClient
 from football_api.data_utils import parse_matches
 from config.settings import api_key
+from db.post_scheduler import schedule_post
 
 load_dotenv()
 
@@ -55,6 +56,16 @@ def get_next_fixture():
 def send_to_lemmy():
     # Replace this with your code to send the next fixture to Lemmy
     return "Next fixture sent to Lemmy!"
+
+
+@app.route("/schedule_post", methods=["POST"])
+def handle_schedule_post():
+    season = request.json.get("season")
+    team_id = request.json.get("teamId")
+    league_id = request.json.get("leagueId")
+
+    result = schedule_post(season, team_id, league_id)
+    return result
 
 
 if __name__ == "__main__":
