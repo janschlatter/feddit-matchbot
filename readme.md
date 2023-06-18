@@ -1,5 +1,7 @@
 # Lemmy Football Match Thread Bot
 
+![Lemmy Football Match Thread Bot Logo](src/logo.png)
+
 👋 Welcome to the Lemmy Football Match Thread Bot repository! This bot is a work in progress that aims to create match threads for football matches on the Lemmy platform. Right now, the basic framework is done.
 
 ## Features
