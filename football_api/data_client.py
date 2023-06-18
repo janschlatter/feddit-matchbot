@@ -1,6 +1,5 @@
 import requests
-import http.client
-import json
+from config.settings import api_key
 
 
 class FootballDataClient:
@@ -11,7 +10,7 @@ class FootballDataClient:
     def get_matches(self, LEAGUE_ID, SEASON):
         url = f"{self.base_url}/fixtures?league={LEAGUE_ID}&season={SEASON}"
         headers = {
-            "x-rapidapi-key": self.api_key,
+            "x-rapidapi-key": api_key,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
         response = requests.get(url, headers=headers)
@@ -20,7 +19,7 @@ class FootballDataClient:
     def get_next_fixture(self, TEAM_ID, SEASON, LEAGUE_ID):
         url = f"{self.base_url}/fixtures?season={SEASON}&league={LEAGUE_ID}&team={TEAM_ID}&next=1"
         headers = {
-            "x-rapidapi-key": self.api_key,
+            "x-rapidapi-key": api_key,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
         response = requests.get(url, headers=headers)
