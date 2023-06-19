@@ -15,9 +15,11 @@
 
 ## How It Works
 
-🔧 The bot is powered by a Python backend and utilizes the API-Football data via Rapid API. Interaction with the Lemmy API is used to create and update posts for match threads.
+🔧 The bot is powered by a Python backend with a Flask frontend. The data is managed in a PostgreSQL database.
 
-You will propably need to pay for the API data (Free=100 calls per day). But, unlike *ehm* other API services, you do get a product from it instead of being exploited as the product yourselves.
+This bot utilizes the API-Football data via Rapid API and posts to Lemmy via its API to create and update posts for match threads.
+
+You will propably need to pay for the API data from API-Football (Free = 100 calls per day). But, unlike *ehm* other API services, you do get a product from it instead of being exploited as the product yourselves.
 
 ## Usage
 
@@ -25,8 +27,9 @@ You will propably need to pay for the API data (Free=100 calls per day). But, un
 
 1. Clone the repository to your local machine.
 2. Install any required dependencies.
-3. Rename the `.env.example` file to `.env` and update the necessary credentials inside.
-4. Run the bot locally to start creating and updating match threads on the Lemmy platform.
+3. Set up a PostgreSQL RDMBS. You can also use services like [neon.tech](neon.tech).
+4. Rename the `.env.example` file to `.env` and update the necessary credentials inside.
+5. Run the bot locally or host it on your VM to start creating and updating match threads on the Lemmy platform. Simply run app.py for this and head over to 127.0.0.1:5500
 
 ### Lemmy Community ID
 
@@ -41,7 +44,7 @@ To find out your Lemmy Community ID, quickly head over to your lemmy community y
 - [ ] Enable the ability to update the post body during live matches to provide real-time information.
 - [ ] Develop a scheduler to automate the posting of match threads based on predefined schedules.
 - [ ] Create a backend solution specifically for running the bot on an Ubuntu server.
-- [ ] Design and implement a user-friendly frontend interface to enhance the user experience.
+- [~] Design and implement a user-friendly frontend interface to enhance the user experience.
 
 ## Contribute
 

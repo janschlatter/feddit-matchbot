@@ -44,6 +44,85 @@ function fetchTeams() {
     xhr.send();
 }
 
+// Add an event listener to the League dropdown
+document.getElementById("league").addEventListener("change", fetchTeams);
+
+// Call the populateLeaguesDropdown function when the page loads
+console.log("Page loaded. Populating leagues dropdown...");
+populateLeaguesDropdown();
+
+// Set the current year as the default value for the Season dropdown
+var currentYear = new Date().getFullYear();
+document.getElementById("season").value = currentYear;
+
+function displayNextFixtures(nextFixtures) {
+    var nextFixturesElement = document.getElementById("next-fixtures");
+    nextFixturesElement.innerHTML = ""; // Clear the previous content
+
+    if (nextFixtures.length > 0) {
+        var table = document.createElement("table");
+        table.classList.add("table");
+        var thead = document.createElement("thead");
+        var tbody = document.createElement("tbody");
+
+        // Create table header
+        var headerRow = document.createElement("tr");
+        var headers = ["Home Team", "Away Team", "Date", "Status", "Score"];
+        headers.forEach(function(header) {
+            var th = document.createElement("th");
+            th.textContent = header;
+            headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
+
+        // Create table rows
+        nextFixtures.forEach(function(fixture) {
+            var row = document.createElement("tr");
+            var columns = [
+                fixture.home_team,
+                fixture.away_team,
+                fixture.date,
+                fixture.status,
+                fixture.score
+            ];
+            columns.forEach(function(column) {
+                var td = document.createElement("td");
+                td.textContent = column;
+                row.appendChild(td);
+            });
+            tbody.appendChild(row);
+        });
+        table.appendChild(tbody);
+
+        nextFixturesElement.appendChild(table);
+    } else {
+        nextFixturesElement.innerHTML = "<p>No next fixtures found.</p>";
+    }
+}
+
+function getNextFixtures() {
+    console.log("Getting next fixtures...");
+    var season = document.getElementById("season").value;
+    var teamId = document.getElementById("team").value;
+    var leagueId = document.getElementById("league").value;
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", `/get_next_fixture?season=${season}&team_id=${teamId}&league_id=${leagueId}`, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                console.log("Next fixtures fetched successfully.");
+                var nextFixtures = JSON.parse(xhr.responseText);
+                displayNextFixtures(nextFixtures);
+            } else {
+                console.error("Error fetching next fixtures:", xhr.status);
+            }
+        }
+    };
+    xhr.send();
+}
+
 // Function to populate the Team dropdown with the retrieved data
 function populateTeamsDropdown(teams) {
     console.log("Populating teams dropdown...");
@@ -56,86 +135,4 @@ function populateTeamsDropdown(teams) {
         teamDropdown.appendChild(option);
     });
     teamDropdown.disabled = false; // Enable the Team dropdown
-}
-
-// Add an event listener to the League dropdown
-document.getElementById("league").addEventListener("change", fetchTeams);
-
-// Call the populateLeaguesDropdown function when the page loads
-console.log("Page loaded. Populating leagues dropdown...");
-populateLeaguesDropdown();
-
-// Set the current year as the default value for the Season dropdown
-var currentYear = new Date().getFullYear();
-document.getElementById("season").value = currentYear;
-
-function displayNextFixture(nextFixture) {
-    var nextFixtureElement = document.getElementById("next-fixture");
-    nextFixtureElement.innerHTML = ""; // Clear the previous content
-
-    if (nextFixture.length > 0) {
-        var fixture = nextFixture[0];
-        var fixtureHtml = `
-            <h3>Next Fixture</h3>
-            <p>Home Team: ${fixture.home_team}</p>
-            <p>Away Team: ${fixture.away_team}</p>
-            <p>Date: ${fixture.date}</p>
-            <p>Status: ${fixture.status}</p>
-            <p>Score: ${fixture.score}</p>
-        `;
-        nextFixtureElement.innerHTML = fixtureHtml;
-    } else {
-        nextFixtureElement.innerHTML = "<p>No next fixture found.</p>";
-    }
-}
-
-function getNextFixture() {
-    console.log("Getting next fixture...");
-    var season = document.getElementById("season").value;
-    var teamId = document.getElementById("team").value;
-    var leagueId = document.getElementById("league").value;
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", `/get_next_fixture?season=${season}&team_id=${teamId}&league_id=${leagueId}`, true);
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                console.log("Next fixture fetched successfully.");
-                var nextFixture = JSON.parse(xhr.responseText);
-                displayNextFixture(nextFixture);
-            } else {
-                console.error("Error fetching next fixture:", xhr.status);
-            }
-        }
-    };
-    xhr.send();
-}
-
-function schedulePost() {
-    console.log("Scheduling post...");
-    var season = document.getElementById("season").value;
-    var teamId = document.getElementById("team").value;
-    var leagueId = document.getElementById("league").value;
-
-    var data = {
-        season: season,
-        teamId: teamId,
-        leagueId: leagueId
-    };
-
-    var xhr = new XMLHttpRequest();
-    xhr.open("POST", "/schedule_post", true);
-    xhr.setRequestHeader("Content-Type", "application/json");
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                console.log("Post scheduled successfully.");
-                var result = xhr.responseText;
-                alert(result);
-            } else {
-                console.error("Error scheduling post:", xhr.status);
-            }
-        }
-    };
-    xhr.send(JSON.stringify(data));
 }

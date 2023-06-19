@@ -6,8 +6,8 @@
     <h1 class="pb-5">Search for Fixtures</h1>
     <div class="row">
         <div id="content" class="col-md-9">
-            <h2>Next Fixture</h2>
-            <div id="next-fixture"></div>
+            <h2>Next 20 Fixtures</h2>
+            <div id="next-fixtures"></div>
             <button onclick="sendToLemmy()" class="btn btn-primary">Send to Lemmy</button>
             <button onclick="schedulePost()" class="btn btn-primary">Schedule Post</button>
         </div>
@@ -33,7 +33,7 @@
             <option value="">Select a team</option>
         </select>
     </div>
-    <button onclick="getNextFixture()" class="btn btn-primary">Get Next Fixture</button>
+    <button onclick="getNextFixtures()" class="btn btn-primary">Get Next Fixtures</button>
 
     <script src="{{ url_for('static', filename='js/teamSearch.js') }}"></script>
 </script>
