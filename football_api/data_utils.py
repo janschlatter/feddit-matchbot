@@ -10,3 +10,14 @@ def parse_matches(matches_data):
         }
         matches.append(match)
     return matches
+
+
+def parse_teams(teams_data):
+    teams = []
+    for team_data in teams_data["response"]:
+        team = {
+            "id": team_data["team"]["id"],
+            "name": team_data["team"]["name"],
+        }
+        teams.append(team)
+    return teams

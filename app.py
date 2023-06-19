@@ -2,9 +2,10 @@ from flask import Flask, render_template, request, redirect, url_for, jsonify
 from db.db import get_connection, release_connection
 from dotenv import load_dotenv
 import os
+import requests
 
 from football_api.data_client import FootballDataClient
-from football_api.data_utils import parse_matches
+from football_api.data_utils import parse_matches, parse_teams
 from config.settings import api_key
 from db.post_scheduler import schedule_post
 
@@ -97,6 +98,23 @@ def delete_post(post_id):
         return f"Error deleting post: {e}"
     finally:
         release_connection(conn)
+
+
+@app.route("/teams")
+def get_teams():
+    season = request.args.get("season")
+    league_id = request.args.get("leagueId")
+
+    # Create an instance of the FootballDataClient
+    client = FootballDataClient(api_key)
+
+    # Make the API call to fetch the list of teams
+    teams_data = client.get_teams(league_id, season)
+
+    # Parse the teams data (you may need to create a new function for this)
+    teams = parse_teams(teams_data)
+
+    return jsonify(teams)
 
 
 if __name__ == "__main__":

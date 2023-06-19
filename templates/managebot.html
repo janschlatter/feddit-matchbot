@@ -13,78 +13,28 @@
         </div>
     </div>
 
-    <script>
-        function sendToLemmy() {
-            // Make an AJAX request to send the next fixture to Lemmy
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/send_to_lemmy", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert("Next fixture sent to Lemmy!");
-                }
-            };
-            xhr.send();
-        }
-
-        function displayNextFixture(nextFixture) {
-            var nextFixtureDiv = document.getElementById("next-fixture");
-            nextFixtureDiv.innerHTML = `
-                <p>Home Team: ${nextFixture[0].home_team}</p>
-                <p>Away Team: ${nextFixture[0].away_team}</p>
-                <p>Date: ${nextFixture[0].date}</p>
-                <p>Status: ${nextFixture[0].status}</p>
-                <p>Score: ${nextFixture[0].score}</p>
-            `;
-        }
-
-        function getNextFixture() {
-            var season = document.getElementById("season").value;
-            var teamId = document.getElementById("team-id").value;
-            var leagueId = document.getElementById("league-id").value;
-
-            // Make an AJAX request to get the next fixture
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", `/get_next_fixture?season=${season}&team_id=${teamId}&league_id=${leagueId}`, true);
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    var nextFixture = JSON.parse(xhr.responseText);
-                    displayNextFixture(nextFixture);
-                }
-            };
-            xhr.send();
-        }
-
-        function schedulePost() {
-            var season = document.getElementById("season").value;
-            var teamId = document.getElementById("team-id").value;
-            var leagueId = document.getElementById("league-id").value;
-
-            // Make an AJAX request to schedule the post
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/schedule_post", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    alert("Post scheduled!");
-                }
-            };
-            xhr.send(JSON.stringify({ season: season, teamId: teamId, leagueId: leagueId }));
-        }
-    </script>
-
     <h2>Input Data</h2>
     <div class="form-group">
         <label for="season">Season:</label>
-        <input type="text" id="season" name="season" class="form-control" required>
+        <input type="text" id="season" name="season" class="form-control" required readonly>
     </div>
     <div class="form-group">
-        <label for="team-id">Team ID:</label>
-        <input type="text" id="team-id" name="team-id" class="form-control" required>
+        <label for="league">League:</label>
+        <select id="league" name="league" class="form-control" required>
+            <option value="">Select a league</option>
+            {% for league in leagues %}
+                <option value="{{ league.id }}">{{ league.name }}</option>
+            {% endfor %}
+        </select>
     </div>
     <div class="form-group">
-        <label for="league-id">League ID:</label>
-        <input type="text" id="league-id" name="league-id" class="form-control" required>
+        <label for="team">Team:</label>
+        <select id="team" name="team" class="form-control" required disabled>
+            <option value="">Select a team</option>
+        </select>
     </div>
     <button onclick="getNextFixture()" class="btn btn-primary">Get Next Fixture</button>
+
+    <script src="{{ url_for('static', filename='js/teamSearch.js') }}"></script>
+</script>
 {% endblock %}

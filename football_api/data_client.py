@@ -24,3 +24,12 @@ class FootballDataClient:
         }
         response = requests.get(url, headers=headers)
         return response.json()
+
+    def get_teams(self, league_id, season):
+        url = f"{self.base_url}/teams?league={league_id}&season={season}"
+        headers = {
+            "x-rapidapi-key": self.api_key,
+            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+        }
+        response = requests.get(url, headers=headers)
+        return response.json()
