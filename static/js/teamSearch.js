@@ -106,9 +106,10 @@ function getNextFixtures() {
     var season = document.getElementById("season").value;
     var teamId = document.getElementById("team").value;
     var leagueId = document.getElementById("league").value;
+    var numFixtures = 20;  // Set the desired number of fixtures
 
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", `/get_next_fixture?season=${season}&team_id=${teamId}&league_id=${leagueId}`, true);
+    xhr.open("GET", `/get_next_fixture?season=${season}&team_id=${teamId}&league_id=${leagueId}&num_fixtures=${numFixtures}`, true);  // Pass the num_fixtures parameter
     xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
             if (xhr.status === 200) {

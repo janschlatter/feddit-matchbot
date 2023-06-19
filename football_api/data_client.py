@@ -16,10 +16,10 @@ class FootballDataClient:
         response = requests.get(url, headers=headers)
         return response.json()
 
-    def get_next_fixture(self, TEAM_ID, SEASON, LEAGUE_ID):
-        url = f"{self.base_url}/fixtures?season={SEASON}&league={LEAGUE_ID}&team={TEAM_ID}&next=1"
+    def get_next_fixtures(self, team_id, season, league_id, num_fixtures=1):
+        url = f"{self.base_url}/fixtures?season={season}&league={league_id}&team={team_id}&next={num_fixtures}"
         headers = {
-            "x-rapidapi-key": api_key,
+            "x-rapidapi-key": self.api_key,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
         response = requests.get(url, headers=headers)

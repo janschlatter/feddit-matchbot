@@ -43,15 +43,18 @@ def get_next_fixture():
     season = request.args.get("season")
     team_id = request.args.get("team_id")
     league_id = request.args.get("league_id")
+    num_fixtures = request.args.get("num_fixtures")
 
-    # Replace this with your code to fetch the next fixture based on the input data
     client = FootballDataClient(api_key)
-    next_fixture_data = client.get_next_fixture(
-        int(team_id), int(season), int(league_id)
+    next_fixtures_data = client.get_next_fixtures(
+        int(team_id),
+        int(season),
+        int(league_id),
+        int(num_fixtures),  # Pass the num_fixtures parameter
     )
-    next_fixture = parse_matches(next_fixture_data)
+    next_fixtures = parse_matches(next_fixtures_data)
 
-    return jsonify(next_fixture)
+    return jsonify(next_fixtures)
 
 
 @app.route("/send_to_lemmy", methods=["POST"])

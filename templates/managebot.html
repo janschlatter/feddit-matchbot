@@ -8,8 +8,6 @@
         <div id="content" class="col-md-9">
             <h2>Next 20 Fixtures</h2>
             <div id="next-fixtures"></div>
-            <button onclick="sendToLemmy()" class="btn btn-primary">Send to Lemmy</button>
-            <button onclick="schedulePost()" class="btn btn-primary">Schedule Post</button>
         </div>
     </div>
 
@@ -18,23 +16,146 @@
         <label for="season">Season:</label>
         <input type="text" id="season" name="season" class="form-control" required readonly>
     </div>
-    <div class="form-group">
-        <label for="league">League:</label>
-        <select id="league" name="league" class="form-control" required>
+    <div class="form-floating">
+        <select id="league" name="league" class="form-select" required>
             <option value="">Select a league</option>
             {% for league in leagues %}
                 <option value="{{ league.id }}">{{ league.name }}</option>
             {% endfor %}
         </select>
+        <label for="league">League</label>
     </div>
-    <div class="form-group">
-        <label for="team">Team:</label>
-        <select id="team" name="team" class="form-control" required disabled>
+    
+    <div class="form-floating">
+        <select id="team" name="team" class="form-select" required disabled>
             <option value="">Select a team</option>
         </select>
+        <label for="team">Team</label>
     </div>
     <button onclick="getNextFixtures()" class="btn btn-primary">Get Next Fixtures</button>
 
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Home Team</th>
+                <th>Away Team</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Score</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="fixtures-table-body">
+        </tbody>
+    </table>
+
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header">
+                <img src="..." class="rounded me-2" alt="...">
+                <strong class="me-auto">Lemmy Matchbot</strong>
+                <small>Just now</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Post sent to Lemmy!
+            </div>
+        </div>
+    </div>
+
     <script src="{{ url_for('static', filename='js/teamSearch.js') }}"></script>
-</script>
+    <script>
+        function sendToLemmy() {
+            // Replace this with your code to send the next fixture to Lemmy
+            var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+            toast.show();
+        }
+
+        function schedulePost() {
+            // Replace this with your code to schedule the next fixture post
+            var toast = new bootstrap.Toast(document.getElementById('liveToast'));
+            toast.show();
+        }
+
+        function displayNextFixtures(nextFixtures) {
+            var fixturesTableBody = document.getElementById("fixtures-table-body");
+            fixturesTableBody.innerHTML = ""; // Clear the previous content
+
+            if (nextFixtures.length > 0) {
+                nextFixtures.forEach(function(fixture) {
+                    var row = document.createElement("tr");
+                    var columns = [
+                        fixture.home_team,
+                        fixture.away_team,
+                        fixture.date,
+                        fixture.status,
+                        fixture.score
+                    ];
+                    columns.forEach(function(column) {
+                        var td = document.createElement("td");
+                        td.textContent = column;
+                        row.appendChild(td);
+                    });
+
+                    var actionsTd = document.createElement("td");
+                    var buttonGroup = document.createElement("div");
+                    buttonGroup.classList.add("btn-group");
+                    buttonGroup.setAttribute("role", "group");
+
+                    var postNowButton = document.createElement("button");
+                    postNowButton.classList.add("btn", "btn-secondary");
+                    postNowButton.textContent = "Post Now";
+                    postNowButton.addEventListener("click", sendToLemmy);
+
+                    var scheduleButton = document.createElement("button");
+                    scheduleButton.classList.add("btn", "btn-primary");
+                    scheduleButton.textContent = "Schedule Post";
+                    scheduleButton.addEventListener("click", schedulePost);
+
+                    buttonGroup.appendChild(postNowButton);
+                    buttonGroup.appendChild(scheduleButton);
+                    actionsTd.appendChild(buttonGroup);
+
+                    row.appendChild(actionsTd);
+                    fixturesTableBody.appendChild(row);
+                });
+            } else {
+                var row = document.createElement("tr");
+                var td = document.createElement("td");
+                td.setAttribute("colspan", "6");
+                td.textContent = "No fixtures found.";
+                row.appendChild(td);
+                fixturesTableBody.appendChild(row);
+            }
+        }
+
+        function getNextFixtures() {
+            console.log("Getting next fixtures...");
+            var season = document.getElementById("season").value;
+            var teamId = document.getElementById("team").value;
+            var leagueId = document.getElementById("league").value;
+            var numFixtures = 20;  // Set the desired number of fixtures
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", `/get_next_fixture?season=${season}&team_id=${teamId}&league_id=${leagueId}&num_fixtures=${numFixtures}`, true);  // Pass the num_fixtures parameter
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    if (xhr.status === 200) {
+                        console.log("Next fixtures fetched successfully.");
+                        var nextFixtures = JSON.parse(xhr.responseText);
+                        displayNextFixtures(nextFixtures);
+                    } else {
+                        console.error("Error fetching next fixtures:", xhr.status);
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        // Initialize the toasts
+        var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+        var toastList = toastElList.map(function(toastEl) {
+            return new bootstrap.Toast(toastEl);
+        });
+    </script>
 {% endblock %}
