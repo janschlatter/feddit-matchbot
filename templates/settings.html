@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+    <h1 class="pb-5">Settings</h1>
+    <form>
+        <section>
+            <h2>General</h2>
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="botActive">
+                <label class="form-check-label" for="botActive">
+                    Bot Active
+                </label>
+            </div>
+            <div class="form-floating mb-3">
+                <select class="form-select" id="timezone" aria-label="Timezone">
+                    <option value="UTC+1">UTC+1 (Berlin)</option>
+                    <option value="UTC+2">UTC+2 (Paris)</option>
+                    <option value="UTC-5">UTC-5 (New York)</option>
+                    <!-- Add more timezone options here -->
+                </select>
+                <label for="timezone">Timezone</label>
+            </div>
+        </section>
+        <section>
+            <h2>Lemmy</h2>
+            <div class="mb-3">
+                <h3>Communities</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="lemmyInstanceUrl" placeholder="Lemmy Instance URL">
+                            <label for="lemmyInstanceUrl">Lemmy Instance URL</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="communityId" placeholder="Community ID">
+                            <label for="communityId">Community ID</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="communityDisplayName" placeholder="Community Display Name">
+                            <label for="communityDisplayName">Community Display Name</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add more community fields here -->
+                <button class="btn btn-primary" type="button">Add Community</button>
+            </div>
+            <div class="mb-3">
+                <h3>Bot Accounts</h3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="lemmyInstanceUrl" placeholder="Lemmy Instance URL">
+                            <label for="lemmyInstanceUrl">Lemmy Instance URL</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="accountNameEmail" placeholder="Account Name or Email">
+                            <label for="accountNameEmail">Account Name or Email</label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control" id="accountPassword" placeholder="Account Password">
+                            <label for="accountPassword">Account Password</label>
+                        </div>
+                    </div>
+                </div>
+                <!-- Add more account fields here -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary" type="button">Add Account</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <button class="btn btn-primary" type="submit">Save</button>
+    </form>
+{% endblock %}

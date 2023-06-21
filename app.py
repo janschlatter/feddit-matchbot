@@ -120,5 +120,10 @@ def get_teams():
     return jsonify(teams)
 
 
+@app.route("/settings")
+def settings():
+    return render_template("settings.html")
+
+
 if __name__ == "__main__":
     app.run()

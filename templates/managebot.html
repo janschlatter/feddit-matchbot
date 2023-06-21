@@ -12,25 +12,32 @@
     </div>
 
     <h2>Input Data</h2>
-    <div class="form-group">
-        <label for="season">Season:</label>
-        <input type="text" id="season" name="season" class="form-control" required readonly>
-    </div>
-    <div class="form-floating">
-        <select id="league" name="league" class="form-select" required>
-            <option value="">Select a league</option>
-            {% for league in leagues %}
-                <option value="{{ league.id }}">{{ league.name }}</option>
-            {% endfor %}
-        </select>
-        <label for="league">League</label>
-    </div>
-    
-    <div class="form-floating">
-        <select id="team" name="team" class="form-select" required disabled>
-            <option value="">Select a team</option>
-        </select>
-        <label for="team">Team</label>
+    <div class="row">
+        <div class="col-md-2">
+            <div class="form-floating">
+                <input type="text" id="season" name="season" class="form-control" required readonly disabled>
+                <label for="season">Season</label>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-floating">
+                <select id="league" name="league" class="form-select" required>
+                    <option value="">Select a league</option>
+                    {% for league in leagues %}
+                        <option value="{{ league.id }}">{{ league.name }}</option>
+                    {% endfor %}
+                </select>
+                <label for="league">League</label>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="form-floating">
+                <select id="team" name="team" class="form-select" required disabled>
+                    <option value="">Select a team</option>
+                </select>
+                <label for="team">Team</label>
+            </div>
+        </div>
     </div>
     <button onclick="getNextFixtures()" class="btn btn-primary">Get Next Fixtures</button>
 
